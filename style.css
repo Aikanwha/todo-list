@@ -62,6 +62,21 @@ h1 {
     background: #f9f9f9;
 }
 
+.task-text {
+    flex: 1; /*This allows text to take available space*/
+}
+
+.task-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px; /*Space between timestamp and delete button*/
+}
+
+.task-time {
+    font-size: 0.8em;
+    color: #666;
+    font-style: italic;
+}
 .task.completed {
     text-decoration: line-through;
     opacity: 0.6;
