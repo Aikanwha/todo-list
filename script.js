@@ -17,7 +17,7 @@ function formatDate(date) {
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString().slice(-2);
     const time = date.toLocaleTimeString();
-    return `Created: ${day}/${month}/${year} ${time}`;
+    return ` ${day}/${month}/${year} ${time}`;
 }
 
 function addTask() {
@@ -41,7 +41,7 @@ function addTask() {
     const createdAt = new Date();
     const timeSpan = document.createElement('span');
     timeSpan.className = 'task-time';
-    timeSpan.textContent = formatDate(createdAt);
+    timeSpan.textContent = `Created: ${formatDate(createdAt)}`;
 
     // Delete button
     const deleteBtn = document.createElement('button');
@@ -71,18 +71,18 @@ function deleteTask(e) {
     // Find the task item
     const taskItem = e.target.closest('.task');
     if (!taskItem) return;
-  
+
     // Add animation
     taskItem.style.transition = 'opacity 0.3s';
     taskItem.style.opacity = '0';
-  
+
     // Remove after animation completes
     setTimeout(() => {
-      const taskText = taskItem.querySelector('.task-text').textContent;
-      taskItem.remove();
-      removeTaskFromStorage(taskText);
+        const taskText = taskItem.querySelector('.task-text').textContent;
+        taskItem.remove();
+        removeTaskFromStorage(taskText);
     }, 300);
-  }
+}
 
 function toggleComplete(e) {
     if (e.target.tagName === 'BUTTON') return; // Ignore delete button clicks
@@ -174,3 +174,26 @@ function updateTaskInStorage(taskItem, isNowCompleted) {
     }
 }
 
+
+// Theme Toggle Logic
+const themeToggle = document.getElementById('themeToggle');
+const savedTheme = localStorage.getItem('theme') || 'light';
+
+// Apply saved theme on load
+document.documentElement.setAttribute('data-theme', savedTheme);
+updateToggleIcon(savedTheme);
+
+// Toggle Theme Function
+themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateToggleIcon(newTheme);
+});
+
+// Update Toggle Icon
+function updateToggleIcon(theme) {
+    themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+}
