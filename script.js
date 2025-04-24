@@ -90,20 +90,34 @@ function toggleComplete(e) {
     const isNowCompleted = !taskItem.classList.contains('completed');
     taskItem.classList.toggle('completed');
 
+    const timeSpan = taskItem.querySelector('.task-time');
     // Update timestamp if task was just completed
     if (isNowCompleted) {
-        const timeSpan = taskItem.querySelector('.task-time');
         const completedAt = new Date();
         timeSpan.textContent += ` | Completed: ${formatDate(completedAt)}`;
+        const checkMark = document.createElement('span');
+        taskItem.prepend(checkMark);
+        checkMark.className = 'check-mark';
+        checkMark.textContent = '✔️';
+    }
+    else if (!isNowCompleted) {
+        timeSpan.textContent = timeSpan.textContent.split(" |")[0];
+        if (taskItem.firstChild.textContent == '✔️') {
+            taskItem.firstChild.remove();
+        }
     }
 
     updateTaskInStorage(taskItem, isNowCompleted);
 }
 
 // LocalStorage Functions
-function saveTask(task) {
+function saveTask(task, createdAt) {
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.push({ text: task, completed: false });
+    tasks.push({
+        text: task,
+        completed: false,
+        createdAt: createdAt.getTime()
+    });
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
@@ -128,11 +142,16 @@ function loadTasks() {
         timeSpan.className = 'task-time';
 
         const createdAt = new Date(task.createdAt);
-        let timeText = formatDate(createdAt);
+        let timeText = `Created: ${formatDate(createdAt)}`;
 
         if (task.completed && task.completedAt) {
             const completedAt = new Date(task.completedAt);
             timeText += ` | Completed: ${formatDate(completedAt)}`;
+
+            const checkMark = document.createElement('span');
+            taskItem.prepend(checkMark);
+            checkMark.className = 'check-mark';
+            checkMark.textContent = '✔️';
         }
 
         timeSpan.textContent = timeText;

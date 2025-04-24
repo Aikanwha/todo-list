@@ -40,7 +40,7 @@ header {
     border-radius: 8px 8px 0 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-content: center;
     max-width: 800px;
     margin: 20px auto 0;
     padding: 10px 20px;
@@ -64,8 +64,9 @@ header {
 }
 
 h1 {
+    flex-grow: 1;
     text-align: center;
-    color: #333;
+    color: var(--header-text);
 }
 
 .input-section {
@@ -157,4 +158,18 @@ button,
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #b82c3a;
+    cursor: pointer;
+}
+
+span, .task-item {
+    max-width: 50%;
+}
+
+.task-meta {
+    max-width: 50%;
+    color: red;
 }
